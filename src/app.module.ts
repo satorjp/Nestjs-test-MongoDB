@@ -5,6 +5,8 @@ import { ProductsModule } from './products/products.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { OrdersModule } from './orders/orders.module';
 import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -12,13 +14,15 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true, // Makes ConfigModule globally available
       envFilePath: '.env' // Load the database config
     }),
-    MongooseModule.forRoot(`mongodb://localhost:27017`, {
-      user: process.env.DB_USER,
-      pass: process.env.DB_PASSWORD,
-      dbName: process.env.DB_NAME,
+    MongooseModule.forRoot(process.env.MONGO_HOST, {
+      user: process.env.MONGO_USER,
+      pass: process.env.MONGO_PASSWORD,
+      dbName: process.env.MONGO_NAME,
     }),
     ProductsModule,
     OrdersModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
